@@ -1,4 +1,7 @@
 package com.mindex.challenge.service;
 
-public class ReportingStructureService {
+import com.mindex.challenge.data.ReportingStructure;
+
+public interface ReportingStructureService {
+    ReportingStructure read(String employeeId);
 }

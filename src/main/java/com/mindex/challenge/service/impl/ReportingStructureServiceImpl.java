@@ -1,36 +1,34 @@
 package com.mindex.challenge.service.impl;
 
+
 import com.mindex.challenge.data.Employee;
 import com.mindex.challenge.data.ReportingStructure;
+import com.mindex.challenge.service.EmployeeService;
+import com.mindex.challenge.service.ReportingStructureService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Service
-public class ReportingStructureServiceImpl {
-    public ReportingStructure getReportingStructure(Employee employee) {
-        int numberOfReports = calculateNumberOfReports(employee);
-        return new ReportingStructure(employee, numberOfReports);
+public class ReportingStructureServiceImpl implements ReportingStructureService {
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    //removed the @Autowired annotation
+    private ReportingStructure reportingStructure;
+
+    @Override
+    public ReportingStructure read(String employeeId) {
+
+        Employee employee = employeeService.read(employeeId);
+        int allReports = employeeService.calculateNumberOfReports(employeeId);
+        ReportingStructure reportingStructure = new ReportingStructure(employee, allReports);
+
+       return reportingStructure;
     }
 
-    // Helper method to calculate the number of reports recursively
-    private int calculateNumberOfReports(Employee employee) {
-        int count = 0;
-        if (employee.getDirectReports() != null) {
-            Set<String> distinctReports = new HashSet<>();
-            for (Employee directReport : employee.getDirectReports()) {
-                // Count the direct report
-                count++;
-                // Recursively calculate the number of reports for each direct report
-                count += calculateNumberOfReports(directReport);
-
-                // Add distinct reports to the set to avoid double counting in case of a reporting cycle
-                distinctReports.add(directReport.getEmployeeId());
-            }
-            // Subtract the number of distinct reports from the count to avoid overcounting
-            count -= distinctReports.size();
-        }
-        return count;
-    }
 }
+
+// the number of reports needs to come from the employee. all calculation logic needs to be put into the  employeeService file.
