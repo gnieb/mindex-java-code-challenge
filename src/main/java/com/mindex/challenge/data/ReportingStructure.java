@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 public class ReportingStructure {
 
@@ -40,10 +41,27 @@ public class ReportingStructure {
         this.numberOfReports = numberOfReports;
     }
 
+    public void calculateNumberOfReports() {
+        int totalReports = calculateTotalReportsRecursive(employee);
+        numberOfReports = totalReports - 1; // Exclude the root employee itself
+    }
 
+    private int calculateTotalReportsRecursive(Employee employee) {
+        int totalReports = 1; // Count the current employee
 
+        List<Employee> directReports = employee.getDirectReports();
+        if (directReports != null) {
+            for (Employee directReport : directReports) {
+                totalReports += calculateTotalReportsRecursive(directReport);
+            }
+        }
 
+        return totalReports;
+    }
 }
+
+
+
 
 
 

@@ -20,15 +20,13 @@ public class ReportingStructureServiceImpl implements ReportingStructureService 
     private ReportingStructure reportingStructure;
 
     @Override
-    public ReportingStructure read(String employeeId) {
+    public ReportingStructure read(String emId) {
 
-        Employee employee = employeeService.read(employeeId);
-        int allReports = employeeService.calculateNumberOfReports(employeeId);
-        ReportingStructure reportingStructure = new ReportingStructure(employee, allReports);
+        Employee employee = employeeService.read(emId);
+        ReportingStructure reportingStructure = new ReportingStructure(employee, 0);
+        reportingStructure.calculateNumberOfReports();
 
        return reportingStructure;
     }
 
 }
-
-// the number of reports needs to come from the employee. all calculation logic needs to be put into the  employeeService file.

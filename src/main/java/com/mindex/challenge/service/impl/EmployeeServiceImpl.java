@@ -46,24 +46,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return employeeRepository.save(employee);
     }
-
-
-
-    public int calculateNumberOfReports(String id) {
-        int totalReports = 0;
-        Employee employee = this.read(id);
-
-        if (employee.getDirectReports() != null) {
-            for (Employee directReportId : employee.getDirectReports()) {
-
-                Employee directReport = this.read(id);
-                totalReports++; // Counting direct reports
-
-                totalReports += calculateNumberOfReports(id); // Recursive call to count their reports
-                // use directReportId?
-            }
-        }
-
-        return totalReports;
-    }
 }
+
+
+//@Override
+//    public int calculateNumberOfReports(String id) {
+//        int totalReports = 0;
+//        Employee employee = this.read(id);
+//
+//        if (employee.getDirectReports() != null) {
+//            for (Employee directReportId : employee.getDirectReports()) {
+//
+//                Employee directReport = this.read(id);
+//                totalReports++; // Counting direct reports
+//
+//                totalReports += calculateNumberOfReports(id); // Recursive call to count their reports
+//                // use directReportId?
+//            }
+//        }
+//
+//        return totalReports;
+//    }
