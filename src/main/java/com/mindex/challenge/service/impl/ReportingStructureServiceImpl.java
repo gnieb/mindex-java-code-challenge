@@ -1,6 +1,7 @@
 package com.mindex.challenge.service.impl;
 
 
+import com.mindex.challenge.dao.EmployeeRepository;
 import com.mindex.challenge.data.Employee;
 import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.service.EmployeeService;
@@ -19,14 +20,16 @@ public class ReportingStructureServiceImpl implements ReportingStructureService 
     //removed the @Autowired annotation
     private ReportingStructure reportingStructure;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     @Override
     public ReportingStructure read(String emId) {
 
         Employee employee = employeeService.read(emId);
-        ReportingStructure reportingStructure = new ReportingStructure(employee, 0);
-        reportingStructure.calculateNumberOfReports();
 
-       return reportingStructure;
+        // return a new  ReportingStructure prior to calculation, so it can be dynamically calculated at endpoint??
+        return new ReportingStructure(employee, 0);
     }
 
 }

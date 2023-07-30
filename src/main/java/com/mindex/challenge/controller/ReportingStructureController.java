@@ -1,5 +1,6 @@
 package com.mindex.challenge.controller;
 
+import com.mindex.challenge.dao.EmployeeRepository;
 import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.service.ReportingStructureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class ReportingStructureController {
     @Autowired
     private ReportingStructureService reportingStructureService;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     @GetMapping("/hello")
     public String sayHello() {
         return "hello";
@@ -23,7 +27,10 @@ public class ReportingStructureController {
 
     @GetMapping("/reporting/{emId}")
     public ReportingStructure read(@PathVariable String emId) {
+        ReportingStructure reportingStructure = reportingStructureService.read(emId);
+        // Calculate the number of reports dynamically
+        reportingStructure.calculateNumberOfReports(employeeRepository);
 
-        return reportingStructureService.read(emId);
+        return reportingStructure;
     }
 }

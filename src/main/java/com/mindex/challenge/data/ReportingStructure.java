@@ -12,6 +12,9 @@ public class ReportingStructure {
     private Employee employee;
     private int numberOfReports;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     // CONSTRUCTORS
     public ReportingStructure() {
         // Default constructor
@@ -41,22 +44,28 @@ public class ReportingStructure {
         this.numberOfReports = numberOfReports;
     }
 
-    public void calculateNumberOfReports() {
-        int totalReports = calculateTotalReportsRecursive(employee);
-        numberOfReports = totalReports - 1; // Exclude the root employee itself
+    public void calculateNumberOfReports(EmployeeRepository employeeRepository) {
+        Set<String> distinctReports = new HashSet<>();
+        calculateNumberOfReportsRecursive(employee, distinctReports, employeeRepository);
+        numberOfReports = distinctReports.size();
     }
 
-    private int calculateTotalReportsRecursive(Employee employee) {
-        int totalReports = 1; // Count the current employee
-
+    private void calculateNumberOfReportsRecursive(Employee employee, Set<String> distinctReports, EmployeeRepository employeeRepository) {
         List<Employee> directReports = employee.getDirectReports();
         if (directReports != null) {
             for (Employee directReport : directReports) {
-                totalReports += calculateTotalReportsRecursive(directReport);
+                String directReportId = directReport.getEmployeeId();
+                if (!distinctReports.contains(directReportId)) {
+                    distinctReports.add(directReportId);
+
+                    // Fetch the direct report separately using the EmployeeRepository
+                    Employee fetchedDirectReport = employeeRepository.findByEmployeeId(directReportId);
+                    if (fetchedDirectReport != null) {
+                        calculateNumberOfReportsRecursive(fetchedDirectReport, distinctReports, employeeRepository);
+                    }
+                }
             }
         }
-
-        return totalReports;
     }
 }
 
