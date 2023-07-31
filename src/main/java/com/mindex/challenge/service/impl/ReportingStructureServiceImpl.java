@@ -27,8 +27,7 @@ public class ReportingStructureServiceImpl implements ReportingStructureService 
     public ReportingStructure read(String emId) {
 
         Employee employee = employeeService.read(emId);
-
-        // return a new  ReportingStructure prior to calculation, so it can be dynamically calculated at endpoint??
+        // return a new  ReportingStructure prior to calculation with 0 reports instantiated, so it can be dynamically calculated at endpoint.
         return new ReportingStructure(employee, 0);
     }
 
