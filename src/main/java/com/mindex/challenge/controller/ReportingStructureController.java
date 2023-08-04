@@ -22,13 +22,12 @@ public class ReportingStructureController {
     public String sayHello() {
         return "hello";
     }
-
-    //this route works!!
+    //TEST ROUTE
 
     @GetMapping("/reporting/{emId}")
     public ReportingStructure read(@PathVariable String emId) {
         ReportingStructure reportingStructure = reportingStructureService.read(emId);
-        // Calculate the number of reports dynamically
+        // Calculate the number of reports dynamically!!!
         reportingStructure.calculateNumberOfReports(employeeRepository);
 
         return reportingStructure;
